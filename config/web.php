@@ -75,7 +75,8 @@ $config = [
                     'controller' => 'v1/user',
                     'pluralize' => true,
                     'extraPatterns' => [
-
+                        'POST sign-up' => 'sign-up',
+                        'POST auth' => 'auth',
                     ],
                 ],
             ],
