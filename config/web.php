@@ -79,6 +79,54 @@ $config = [
                         'POST auth' => 'auth',
                     ],
                 ],
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => 'v1/account',
+                    'pluralize' => true,
+                    'extraPatterns' => [
+
+                    ],
+                ],
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => 'v1/transaction',
+                    'pluralize' => true,
+                    'extraPatterns' => [
+
+                    ],
+                ],
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => 'v1/account-category',
+                    'pluralize' => true,
+                    'extraPatterns' => [
+
+                    ],
+                ],
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => 'v1/category',
+                    'pluralize' => true,
+                    'extraPatterns' => [
+
+                    ],
+                ],
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => 'v1/currency',
+                    'pluralize' => true,
+                    'extraPatterns' => [
+
+                    ],
+                ],
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => 'v1/label',
+                    'pluralize' => true,
+                    'extraPatterns' => [
+
+                    ],
+                ],
             ],
         ],
     ],
@@ -98,7 +146,7 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['*'],
+        'allowedIPs' => ['*'],
     ];
 }
 
