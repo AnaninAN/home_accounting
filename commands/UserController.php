@@ -33,7 +33,11 @@ class UserController extends Controller
         $this->addusers('admin', 'ananinpgu@mail.ru', 'admin', 'admin');
     }
 
-    public function actionAddUserTest() {
-        $this->addusers('usertest', 'ananintest@mail.ru', 'user', 'simple');
+    public function actionAddUserName1() {
+        $this->addusers('username1', 'username1@test.com', 'username1', 'simple');
+    }
+
+    public function actionAddUserName2() {
+        $this->addusers('username2', 'username2@test.com', 'username2', 'simple');
     }
 }
