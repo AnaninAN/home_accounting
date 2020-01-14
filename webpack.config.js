@@ -1,8 +1,8 @@
 const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = (env = {}) => {
 
   const { mode = 'development' } = env;
@@ -42,11 +42,13 @@ module.exports = (env = {}) => {
     output: {
       filename: isProd ? 'main-[hash:8].js' : undefined
     },
-
+    resolve: {
+      extensions: ['.js', '.jsx'],
+    },
     module: {
       rules: [
         {
-            test: /\.js$/,
+            test: /\.jsx?$/,
             exclude: /node_modules/,
             loader: 'babel-loader'
         },
