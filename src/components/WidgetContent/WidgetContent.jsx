@@ -4,10 +4,7 @@ import React from 'react';
 export class WidgetContent extends React.Component {
     render() {
         return (
-            <div className='widget-content'>
-                <p>{this.props.name}</p>
-                <p>{this.props.value}</p>
-            </div>
+            <li className='widget-content'>{this.props.name} : {this.props.amount} {this.props.currency}</li>
         )
     }
 }

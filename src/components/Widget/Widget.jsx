@@ -7,8 +7,38 @@ export class Widget extends React.Component {
         super(props);
         this.state = {
             visible: true,
-            amount: null,
-            content: [],
+            content: [
+                {
+                    "id": 1,
+                    "name": "First Account",
+                    "amount": 1500,
+                    "account_category_id": 2,
+                    "user_id": 2,
+                    "currency_id": 1,
+                    "created_at": 1574585703,
+                    "updated_at": 1574585703
+                },
+                {
+                    "id": 4,
+                    "name": "Testing acc",
+                    "amount": 650,
+                    "account_category_id": 2,
+                    "user_id": 2,
+                    "currency_id": 3,
+                    "created_at": 1574841985,
+                    "updated_at": 1574841985
+                },
+                {
+                    "id": 5,
+                    "name": "Another nice Account",
+                    "amount": -550,
+                    "account_category_id": 2,
+                    "user_id": 2,
+                    "currency_id": 3,
+                    "created_at": 1574841985,
+                    "updated_at": 1574841985
+                },
+            ],
         };
 
         this.toggleVisibility = this.toggleVisibility.bind(this);
@@ -16,16 +46,16 @@ export class Widget extends React.Component {
     toggleVisibility() {
         this.setState(state => ({
                 visible: !this.state.visible,
-                content: [
-                    {name: 'account1', value: '5000 $',},
-                    {name: 'account2', value: '3000 $',},
-                ],
-            })
-        );
+            }));
+    }
+    getAmount() {
+        return this.state.content.reduce(function(sum,current) {
+            return sum + current.amount;
+        }, 0);
     }
     componentDidMount() {
         this.setState(state => ({
-            amount: Math.random(),
+            amount: this.getAmount() + ' руб',
         }));
     }
     render() {
@@ -40,8 +70,11 @@ export class Widget extends React.Component {
                 {this.state.visible === true &&
                 <div>
                     <p>{this.state.amount}</p>
-                    <WidgetContent name='Account1' value='5000 $'/>
-                    <WidgetContent name='Account2' value='3000 $'/>
+                    <ul>
+                        {this.state.content.map((account) =>
+                                <WidgetContent key={account.id} name={account.name} amount={account.amount} currency='руб'/>
+                                )}
+                    </ul>
                 </div>
                 }
             </div>
