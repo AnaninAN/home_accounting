@@ -1,7 +1,9 @@
-.balance-widget {
-  border: 1px solid #000;
-  width: 300px;
-  background-color: lightgray;
+.widget {
+  position: absolute;
+  border: 1px dashed gray;
+  background-color: white;
+  padding: 0.5rem 1rem;
+  cursor: move;
 }
 
 .widget-header {

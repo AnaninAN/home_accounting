@@ -4,7 +4,11 @@ import React from 'react';
 export class WidgetContent extends React.Component {
     render() {
         return (
-            <li className='widget-content'>{this.props.name} : {this.props.amount} {this.props.currency}</li>
+            <ul>
+                {Object.entries(this.props.content).map(([key, value]) =>
+                    <li key={key}>{key} : {value}</li>
+                )}
+            </ul>
         )
     }
 }
