@@ -9,27 +9,27 @@ export class LoginForm extends React.Component {
 
     handleSignIn = () => {
         const { username, password} = this.state;
+        const { onSuccess } = this.props;
         fetch('http://localhost/v1/users/auth', {
             method: 'POST',
-            mode: 'no-cors',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-
-            },
             body : JSON.stringify({username, password}),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+
         })
             .then(response => response.json())
-            .then((data) => {
-                console.log(data);
+            .then((token) => {
+                onSuccess(token);
             });
 
-    }
+    };
 
     handleTextEdit = ({target: {name, value}}) => {
         this.setState({
             [name]: value,
         })
-    }
+    };
 
     render() {
         const {username, password} = this.state;

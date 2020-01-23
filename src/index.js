@@ -7,13 +7,18 @@ import { Dashboard } from './components/Dashboard';
 import { LoginForm } from './components/LoginForm';
 
 class App extends React.Component {
+    state = {token: null};
+    handleSuccess = (token) => {
+        this.setState({token});
+    };
+
     render() {
         return (
             <div>
                 <p>Hello! It's a start of cool "Home accounting" app</p>
                 <DndProvider backend={Backend}>
-                    <LoginForm></LoginForm>
-                    <Dashboard/>
+                    {!this.state.token && <LoginForm onSuccess={this.handleSuccess}/>}
+                    {this.state.token && <Dashboard/>}
                 </DndProvider>
             </div>
 
