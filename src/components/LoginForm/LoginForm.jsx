@@ -2,10 +2,11 @@ import React from 'react';
 import './LoginForm.scss';
 
 export class LoginForm extends React.Component {
-    state = {
-        username: '',
-        password: '',
-    };
+
+        state = {
+            username: '',
+            password: '',
+        };
 
     handleSignIn = () => {
         const { username, password} = this.state;
@@ -16,15 +17,18 @@ export class LoginForm extends React.Component {
             headers: {
                 'Content-Type': 'application/json',
             },
-
-        })
-            .then(response => response.json())
-            .then((token) => {
-                onSuccess(token);
-            });
+        }).then(response => {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                return Promise.reject(new Error(response.statusText));
+            }
+        }).then(data => {
+            onSuccess(data);
+            this.props.history.push('/');
+        });
 
     };
-
     handleTextEdit = ({target: {name, value}}) => {
         this.setState({
             [name]: value,
