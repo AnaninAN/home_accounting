@@ -7,6 +7,7 @@ import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
 import { Dashboard } from './components/Dashboard';
 import { LoginForm } from './components/LoginForm';
+import { Category } from "./components/_crud/Category";
 
 class App extends React.Component {
     state = {token: localStorage.getItem('token')};
@@ -30,9 +31,12 @@ class App extends React.Component {
                         <button onClick={this.handleSignOut}>Sign Out</button>
                     </Link>
                 }
+                <Link to={'/'}>Dashboard</Link>
+                <Link to={'/crud'}>CRUD</Link>
                 <DndProvider backend={Backend}>
                     <Switch>
                         <PrivateRoute path='/' component={Dashboard} exact/>
+                        <PrivateRoute path='/crud' component={Category} exact/>
                         <Route path='/auth' render={(props) => <LoginForm {...props} onSuccess={this.handleSuccess}/>}/>
                     </Switch>
                 </DndProvider>
