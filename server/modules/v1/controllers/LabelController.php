@@ -17,6 +17,17 @@ class LabelController extends ActiveController
     {
         $behaviors = parent::behaviors();
 
+        $behaviors['corsFilter'] = [
+                    'class' => \yii\filters\Cors::className(),
+                    'cors' => [
+                        'Origin' => ['http://localhost:8080'],
+                        'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                        'Access-Control-Allow-Credentials' => true,
+                    ],
+                ];
+
+        unset($behaviors['authenticator']);
+
         $behaviors['authenticator'] = [
             'class' => HttpBearerAuth::class,
             'except' => [],

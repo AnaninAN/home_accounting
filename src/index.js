@@ -7,7 +7,7 @@ import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
 import { Dashboard } from './components/Dashboard';
 import { LoginForm } from './components/LoginForm';
-import { Category } from "./components/_crud/Category";
+import { CrudContainer } from './components/_containers/CrudContainer';
 
 class App extends React.Component {
     state = {token: localStorage.getItem('token')};
@@ -36,7 +36,7 @@ class App extends React.Component {
                 <DndProvider backend={Backend}>
                     <Switch>
                         <PrivateRoute path='/' component={Dashboard} exact/>
-                        <PrivateRoute path='/crud' component={Category} exact/>
+                        <PrivateRoute path='/crud' component={CrudContainer} exact/>
                         <Route path='/auth' render={(props) => <LoginForm {...props} onSuccess={this.handleSuccess}/>}/>
                     </Switch>
                 </DndProvider>
