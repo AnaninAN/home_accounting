@@ -22,7 +22,10 @@ export const Table = (props) => {
             {props.entities.length > 0 ? (
                 props.entities.map(entity => (
                     <tr key={entity.id}>
-                        <td>{entity.name}</td>
+                        {
+                            Object.entries(entity).map(([key, value]) =>
+                                <td key={key}>{value}</td>
+                        )}
                         <td>
                             <button onClick={() => props.editRow(entity)}>Edit</button>
                             <button onClick={() => handleDelete(entity.id)}>Delete</button>

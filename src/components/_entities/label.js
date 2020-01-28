@@ -1,5 +1,5 @@
 export const label = {
     title: 'label',
     url: 'labels',
-    properties: ['name'],
+    properties: ['id', 'name'],
 };
