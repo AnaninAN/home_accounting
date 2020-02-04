@@ -3,6 +3,7 @@
 namespace app\modules\v1\controllers;
 
 use Yii;
+use yii\filters\Cors;
 use app\modules\v1\models\User;
 use yii\filters\auth\HttpBearerAuth;
 use yii\rest\ActiveController;
@@ -14,7 +15,15 @@ class UserController extends ActiveController
     public function behaviors()
     {
         $behaviors = parent::behaviors();
+        $behaviors['corsFilter'] = [
+                    'class' => \yii\filters\Cors::className(),
+                    'cors' => [
+                        'Origin' => ['http://localhost:8080'],
+                        'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'HEAD', 'OPTIONS'],
+                        'Access-Control-Allow-Credentials' => true,
+                    ],
 
+                ];
         $behaviors['authenticator'] = [
             'class' => HttpBearerAuth::class,
             'except' => ['sign-up', 'auth'],
