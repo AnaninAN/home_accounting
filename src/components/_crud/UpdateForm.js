@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
+import {Form, FormGroup, Label, Input, Button} from 'reactstrap';
 
-export const UpdateForm = (props) => {
+export const UpdateForm = props => {
 
     const [entity, setEntity] = useState(props.currentEntity);
 
@@ -11,13 +12,13 @@ export const UpdateForm = (props) => {
         [props]
     );
 
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
+    const handleInputChange = event => {
+        const {name, value} = event.target;
 
-        setEntity({ ...entity, [name]: value });
+        setEntity({...entity, [name]: value});
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = event => {
         event.preventDefault();
         if (!entity.name) return;
 
@@ -25,19 +26,26 @@ export const UpdateForm = (props) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
             {
-                props.entity.properties.map(prop => {
+                props.model.properties.map(prop => {
                     return (
-                        <div key={prop}>
-                            <label>{prop}</label>
-                            <input type='text' name={prop} value={entity[prop]} onChange={handleInputChange} />
-                        </div>
+                        <FormGroup className='text-left' key={prop}>
+                            <Label for={prop}>{prop}</Label>
+                            <Input
+                                type='text'
+                                name={prop}
+                                value={!entity[prop] ? '' : entity[prop]}
+                                onChange={handleInputChange}
+                            />
+                        </FormGroup>
                     )
                 })
             }
-            <button>Update category</button>
-            <button onClick={() => props.setEditing(false)}>Cancel</button>
-        </form>
+            <FormGroup className='d-flex justify-content-around'>
+                <Button>Update {props.model.title}</Button>
+                <Button color='danger' onClick={() => props.setEditing(false)}>Cancel</Button>
+            </FormGroup>
+        </Form>
     )
 };

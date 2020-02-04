@@ -1,150 +1,90 @@
-import React from 'react';
+import React, {Fragment} from 'react';
+import {Row, Col} from 'reactstrap';
 import {CreateForm} from './CreateForm';
-import {Table} from './Table';
+import {ViewTable} from './ViewTable';
 import {UpdateForm} from './UpdateForm';
 
 export class Crud extends React.Component {
-   state = {
-            entities: [],
-            editing: false,
-            currentEntity: '',
-        };
 
-    componentDidMount() {
-        fetch(`http://localhost/v1/${this.props.entity.url}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            },
-        }).then(response => {
-            if (response.status === 200) {
-                return response.json();
-            } else {
-                return Promise.reject(new Error(response.statusText));
-            }
-        }).then(data => {
-            this.setState({
-                entities: data,
-            });
-        });
-    }
-
-    addEntity = (entity) => {
-        fetch(`http://localhost/v1/${this.props.entity.url}`, {
-            method: 'POST',
-            body : JSON.stringify(entity),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            },
-        }).then(response => {
-            if (response.status === 201) {
-                return response.json();
-            } else {
-                return Promise.reject(new Error(response.statusText));
-            }
-        }).then(data => {
-            const entities = this.state.entities.concat(data);
-            this.setState(  {
-                entities: entities,
-            });
-        });
+    state = {
+        editing: false,
+        currentEntity: '',
     };
 
-    deleteEntity = (id) => {
-        this.setState({
-            editing: false,
-        });
-        fetch(`http://localhost/v1/${this.props.entity.url}/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            },
-        }).then(response => {
-            if (response.status === 204) {
-                this.setState({
-                    entities: this.state.entities.filter(entity => entity.id !== id),
-                });
-            } else {
-                return Promise.reject(new Error(response.statusText));
-            }
-        });
-    };
-
-    updateEntity = (updatedEntity) => {
-        this.setState({
-            editing: false,
-        });
-        const id = updatedEntity.id;
-        delete updatedEntity.id;
-
-        fetch(`http://localhost/v1/${this.props.entity.url}/${id}`, {
-            method: 'PATCH',
-            body : JSON.stringify(updatedEntity),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            },
-        }).then(response => {
-            if (response.status === 200) {
-                return response.json();
-            } else {
-                return Promise.reject(new Error(response.statusText));
-            }
-        }).then(data => {
-            this.setState({
-                entities: this.state.entities.map(entity => (entity.id === data.id ? data : entity)),
-            });
-        });
-    };
-
-    setEditing = (value) => {
+    setEditing = value => {
         this.setState({
             editing: value,
         })
     };
 
-    editRow = (entity) => {
+    editRow = entity => {
         this.setState({
             editing: true,
-            currentEntity: { id: entity.id, name: entity.name },
+            currentEntity: {...entity},
         });
+    };
+
+    handleCreateEntity = event => {
+        return this.props.createEntity(event, this.props.model);
+    };
+
+    handleRemoveEntity = event => {
+        this.setState({
+            editing: false,
+        });
+        return this.props.removeEntity(event, this.props.model);
+    };
+
+    handleUpdateEntity = event => {
+        this.setState({
+            editing: false,
+        });
+        return this.props.updateEntity(event, this.props.model);
     };
 
     render() {
         return (
-            <div>
-                <h1>{this.props.entity.title}</h1>
-                <div>
-                    <div>
-                        {this.state.editing ? (
-                            <div>
-                                <h2>Edit {this.props.entity.title}</h2>
-                                <UpdateForm
-                                    editing={this.state.editing}
-                                    setEditing={this.setEditing}
-                                    currentEntity={this.state.currentEntity}
-                                    updateEntity={this.updateEntity}
-                                    entity={this.props.entity}
-                                />
-                            </div>
-                        ) : (
-                            <div>
-                                <h2>Add {this.props.entity.title}</h2>
-                                <CreateForm entity={this.props.entity} addEntity={this.addEntity} />
-                            </div>
-                        )}
-                    </div>
-                    <div>
-                        <h2>View {this.props.entity.title}</h2>
-                        <Table model={this.props.entity} entities={this.state.entities} deleteEntity={this.deleteEntity} editRow={this.editRow}/>
-                    </div>
-                </div>
-            </div>
+            <Fragment>
+                <Row className='pt-2'>
+                    <Col className='text-center text-capitalize'>
+                        <h3>{this.props.model.title}</h3>
+                    </Col>
+                </Row>
+                <Row className='mt-3'>
+                    {this.state.editing ? (
+                        <Col className='text-center text-capitalize col-4 offset-4'>
+                            <h4>Edit {this.props.model.title}</h4>
+                            <UpdateForm
+                                editing={this.state.editing}
+                                setEditing={this.setEditing}
+                                currentEntity={this.state.currentEntity}
+                                updateEntity={this.handleUpdateEntity}
+                                model={this.props.model}
+                            />
+                        </Col>
+                    ) : (
+                        <Col className='text-center text-capitalize col-4 offset-4'>
+                            <h4>Add {this.props.model.title}</h4>
+                            <CreateForm model={this.props.model} addEntity={this.handleCreateEntity}/>
+                        </Col>
+                    )}
+                </Row>
+                <Row className='mt-3'>
+                    <Col className='text-center text-capitalize col-4 offset-4'>
+                        <h3>View {this.props.model.url}</h3>
+                    </Col>
+                    <Col className='text-center text-capitalize col-10 offset-1'>
+                        <ViewTable
+                            model={this.props.model}
+                            entities={this.props.entities}
+                            deleteEntity={this.handleRemoveEntity}
+                            editRow={this.editRow}
+                        />
+                    </Col>
+                </Row>
+            </Fragment>
         )
     }
-
 }
 
 

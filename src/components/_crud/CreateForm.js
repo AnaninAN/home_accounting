@@ -1,33 +1,38 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
+import {Form, FormGroup, Label, Input, Button} from 'reactstrap';
 
-export const CreateForm = (props) => {
+export const CreateForm = props => {
 
-    const initialFormState = {};
+    const [entity, setEntity] = useState({});
 
-    const [entity, setEntity] = useState(initialFormState);
+    const handleInputChange = event => {
+        const {name, value} = event.currentTarget;
 
-    const handleInputChange = (event) => {
-        const { name, value } = event.currentTarget;
-        setEntity({ ...entity, [name]: value })
+        setEntity({...entity, [name]: value});
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = event => {
         event.preventDefault();
         if (!entity.name) return;
 
         props.addEntity(entity);
-        setEntity(initialFormState);
+        setEntity({});
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>{props.entity.title}</label>
+        <Form onSubmit={handleSubmit}>
             {
-                props.entity.properties.map(prop => {
-                    return <input type='text' name={prop} key={prop} value={entity[prop]} onChange={handleInputChange} />
+                props.model.properties.map(prop => {
+                    return (
+                        <FormGroup className='text-left' key={prop}>
+                            <Label for={prop}>{prop}</Label>
+                            <Input type='text' name={prop} value={!entity[prop] ? '' : entity[prop]}
+                                   onChange={handleInputChange}/>
+                        </FormGroup>
+                    )
                 })
             }
-            <button>Add new {props.entity.title}</button>
-        </form>
+            <Button>Add new {props.model.title}</Button>
+        </Form>
     )
 };

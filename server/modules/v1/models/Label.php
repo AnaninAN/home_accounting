@@ -44,6 +44,11 @@ class Label extends \yii\db\ActiveRecord
         ];
     }
 
+    public function fields()
+    {
+        return ['id', 'name'];
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

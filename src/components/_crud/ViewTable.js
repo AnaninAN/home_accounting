@@ -1,15 +1,17 @@
 import React from 'react';
+import {Table, Button} from 'reactstrap';
 
-export const Table = (props) => {
+export const ViewTable = (props) => {
 
     const handleDelete = (id) => {
         props.deleteEntity(id);
     };
 
     return (
-        <table>
+        <Table bordered>
             <thead>
             <tr>
+                <th>#</th>
                 {
                     props.model.properties.map(prop => {
                         return <th key={prop}>{prop}</th>
@@ -25,20 +27,20 @@ export const Table = (props) => {
                         {
                             Object.entries(entity).map(([key, value]) =>
                                 <td key={key}>{value}</td>
-                        )}
-                        <td>
-                            <button onClick={() => props.editRow(entity)}>Edit</button>
-                            <button onClick={() => handleDelete(entity.id)}>Delete</button>
+                            )}
+                        <td className='d-flex justify-content-around'>
+                            <Button onClick={() => props.editRow(entity)}>Edit</Button>
+                            <Button color='danger' onClick={() => handleDelete(entity.id)}>Delete</Button>
                         </td>
                     </tr>
                 ))
             ) : (
                 <tr>
-                    <td>No {props.entity}</td>
+                    <td>No {props.model.title}</td>
                 </tr>
             )}
             </tbody>
-        </table>
+        </Table>
     )
 };
 

@@ -1,13 +1,20 @@
+import './assets/main.scss';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
-import { PrivateRoute } from './components/PrivateRoute';
-import './assets/main.scss';
+import { Provider } from 'react-redux';
+import { PrivateRoute } from 'components/PrivateRoute';
+import { Button } from 'reactstrap';
+
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
-import { Dashboard } from './components/Dashboard';
-import { LoginForm } from './components/LoginForm';
-import { CrudContainer } from './components/_containers/CrudContainer';
+
+import { store } from './store';
+import { Header } from 'containers/Header';
+import { default as Dashboard } from 'containers/Dashboard';
+import { LoginForm } from 'components/LoginForm';
 
 class App extends React.Component {
     state = {token: localStorage.getItem('token')};
@@ -25,18 +32,10 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <p>Hello! It's a start of cool "Home accounting" app</p>
-                {this.state.token &&
-                    <Link to={'/auth'}>
-                        <button onClick={this.handleSignOut}>Sign Out</button>
-                    </Link>
-                }
-                <Link to={'/'}>Dashboard</Link>
-                <Link to={'/crud'}>CRUD</Link>
+                <Header token={this.state.token} handleSignOut={this.handleSignOut}/>
                 <DndProvider backend={Backend}>
                     <Switch>
                         <PrivateRoute path='/' component={Dashboard} exact/>
-                        <PrivateRoute path='/crud' component={CrudContainer} exact/>
                         <Route path='/auth' render={(props) => <LoginForm {...props} onSuccess={this.handleSuccess}/>}/>
                     </Switch>
                 </DndProvider>
@@ -45,8 +44,10 @@ class App extends React.Component {
     }
 }
 ReactDOM.render(
-    <BrowserRouter>
-        <App />
-    </BrowserRouter>,
+    <Provider store={store}>
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+    </Provider>,
     document.getElementById('root')
 );
