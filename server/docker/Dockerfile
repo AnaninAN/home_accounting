@@ -47,6 +47,9 @@ ADD ./docker/conf/apache/apache2.conf /etc/apache2/apache2.conf
 #удалим содержащиеся файлы в этих папках, потому что вскоре там будут наши
 RUN rm -R /etc/apache2/sites-enabled/* /etc/apache2/sites-available/* /var/www/*
 
+#добавим конфигурацонный файл для виртуального сервера
+ADD ./docker/conf/apache/vserver.conf /etc/apache2/sites-enabled/vserver.conf
+
 #укажим дирректорию /var/www как рабочую
 WORKDIR /var/www
 
