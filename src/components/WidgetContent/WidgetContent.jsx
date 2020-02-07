@@ -1,14 +1,14 @@
-import './WidgetContent.scss';
 import React from 'react';
+import { ListGroup, ListGroupItem } from 'reactstrap';
 
 export class WidgetContent extends React.Component {
     render() {
         return (
-            <ul>
-                {Object.entries(this.props.content).map(([key, value]) =>
-                    <li key={key}>{key} : {value}</li>
+            <ListGroup className='w-100'>
+                {Object.entries(this.props.entity).map(([key, value]) =>
+                    <ListGroupItem key={key}>{key} : {value}</ListGroupItem>
                 )}
-            </ul>
+            </ListGroup>
         )
     }
 }

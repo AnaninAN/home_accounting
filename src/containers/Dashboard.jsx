@@ -1,90 +1,70 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Container, Navbar, Button } from 'reactstrap';
-import { Widget } from '../components/Widget';
-import { DropTarget } from 'react-dnd';
-import {CrudRedux} from 'containers/CrudContainer';
+
+import { CrudRedux } from 'containers/CrudContainer';
+import { default as WidgetContainer} from 'containers/WidgetContainer';
+import { init } from 'actions/dashboard';
+import { category, currency, label, accountCategory, account } from 'models';
 
 class Dashboard extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            crudVisible: false,
-            widgets: {
-                0: {top: 20, left: 80},
-                1: {top: 180, left: 20},
-                2: {top:100, left: 50},
-            },
-        };
-        this.toggleCrudVisibility = this.toggleCrudVisibility.bind(this);
+
+    state = {
+        crudVisible: false,
+    };
+
+    models = [
+        category,
+        currency,
+        label,
+        accountCategory,
+        account,
+    ];
+
+    componentDidMount() {
+        const { loadEntities } = this.props;
+        this.models.forEach(model => loadEntities(model));
     }
 
-    toggleCrudVisibility() {
+    toggleCrudVisibility = () => {
         this.setState(() => ({
             crudVisible: !this.state.crudVisible,
         }));
-    }
+    };
 
     render() {
-        const { connectDropTarget } = this.props;
-        const { widgets } = this.state;
-        return connectDropTarget(
-            <div>
-            <Container fluid className='bg-secondary overflow-hidden min-vh-100'>
+        return (
+            <Container fluid className='bg-secondary min-vh-100 position-relative'>
                 <Navbar className='d-flex border-bottom'>
                     <h4 className='text-light'>Management Panel</h4>
                     <Button color='info' onClick={this.toggleCrudVisibility}>Toggle CRUD</Button>
                 </Navbar>
                 <h3 className='text-center p-2'>Dashboard</h3>
-                {/*{Object.keys(widgets).map(key => {*/}
-                {/*    const { left, top } = widgets[key];*/}
-                {/*    return (*/}
-                {/*        <Widget*/}
-                {/*            key={key}*/}
-                {/*            id={key}*/}
-                {/*            left={left}*/}
-                {/*            top={top}*/}
-                {/*        />*/}
-                {/*    )*/}
-                {/*})}*/}
+                <WidgetContainer entities={this.props.entities.get('account')}/>
                 {
                     (this.state.crudVisible &&
-                        <CrudRedux/>
+                        <CrudRedux models={this.models}/>
                     )
                 }
             </Container>
-            </div>
-            ,
         )
     }
-    moveWidget(id, left, top) {
-        this.setState(
-            (state) => ({
-                widgets: {
-                    ...state.widgets,
-                    [id]: {
-                        left: left,
-                        top: top,
-                    },
-                },
-            }));
+}
+
+function mapStateToProps(state, props) {
+    return {
+        ...props,
+        entities: state.crud.entities,
     }
 }
-export default DropTarget(
-    'widget',
-    {
-        drop(props, monitor, component) {
-            if (!component) {
-                return
-            }
-            const item = monitor.getItem();
-            const delta = monitor.getDifferenceFromInitialOffset();
-            const left = Math.round(item.left + delta.x);
-            const top = Math.round(item.top + delta.y);
-            component.moveWidget(item.id, left, top);
-        },
-    },
-    connect => ({
-        connectDropTarget: connect.dropTarget(),
-    }),
-)(Dashboard)
+
+function mapDispatchToProps(dispatch) {
+    return {
+        loadEntities: (entity) => dispatch(init(entity)),
+    }
+}
+
+export const DashboardRedux = connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+
+
 

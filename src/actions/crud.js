@@ -1,27 +1,8 @@
 import { createAction } from 'redux-actions';
 
-export const load = createAction('[CRUD] Load');
 export const create = createAction('[CRUD] Create');
 export const remove = createAction('[CRUD] Remove');
 export const update = createAction('[CRUD] Update');
-
-export const init = entity => dispatch => {
-        fetch(`http://localhost/v1/${entity.url}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            },
-        }).then(response => {
-            if (response.status === 200) {
-                return response.json();
-            } else {
-                return Promise.reject(new Error(response.statusText));
-            }
-        }).then(data => {
-            data = data.reduce((obj, item) => Object.assign(obj, { [item.id]: item }) ,{});
-            dispatch(load({name: entity.title, data}));
-        });
-    };
 
 export const createEntity = (entity, model) => dispatch => {
     fetch(`http://localhost/v1/${model.url}`, {
