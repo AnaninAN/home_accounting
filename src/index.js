@@ -13,7 +13,7 @@ import Backend from 'react-dnd-html5-backend';
 
 import { store } from './store';
 import { Header } from 'containers/Header';
-import { default as Dashboard } from 'containers/Dashboard';
+import { DashboardRedux } from 'containers/Dashboard';
 import { LoginForm } from 'components/LoginForm';
 
 class App extends React.Component {
@@ -35,7 +35,7 @@ class App extends React.Component {
                 <Header token={this.state.token} handleSignOut={this.handleSignOut}/>
                 <DndProvider backend={Backend}>
                     <Switch>
-                        <PrivateRoute path='/' component={Dashboard} exact/>
+                        <PrivateRoute path='/' component={DashboardRedux} exact/>
                         <Route path='/auth' render={(props) => <LoginForm {...props} onSuccess={this.handleSuccess}/>}/>
                     </Switch>
                 </DndProvider>

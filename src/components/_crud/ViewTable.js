@@ -22,7 +22,7 @@ export const ViewTable = (props) => {
             </thead>
             <tbody>
             {props.entities.length > 0 ? (
-                props.entities.map(entity => (
+                props.entities.map((entity => (
                     <tr key={entity.id}>
                         {
                             Object.entries(entity).map(([key, value]) =>
@@ -33,7 +33,7 @@ export const ViewTable = (props) => {
                             <Button color='danger' onClick={() => handleDelete(entity.id)}>Delete</Button>
                         </td>
                     </tr>
-                ))
+                )))
             ) : (
                 <tr>
                     <td>No {props.model.title}</td>

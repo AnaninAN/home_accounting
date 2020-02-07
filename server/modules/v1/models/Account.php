@@ -92,11 +92,7 @@ class Account extends ActiveRecord
 
     public function fields()
     {
-        $fields = parent::fields();
-
-        unset($fields['user_id'], $fields['created_at'], $fields['updated_at']);
-
-        return $fields;
+        return ['id', 'name', 'amount', 'account_category_id', 'currency_id'];
     }
 
     /**
