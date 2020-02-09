@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState, Fragment} from 'react';
 import {Form, FormGroup, Label, Input, Button} from 'reactstrap';
 
 export const CreateForm = props => {
@@ -14,9 +14,33 @@ export const CreateForm = props => {
     const handleSubmit = event => {
         event.preventDefault();
         if (!entity.name) return;
-
         props.addEntity(entity);
         setEntity({});
+    };
+
+    const renderInput = prop => {
+        if (prop.includes('_id')) {
+            return (
+                <Fragment>
+                    <Label for={prop}>{prop.replace('_id', '')}</Label>
+                    <Input type="select" name={prop} id={prop} onChange={handleInputChange}>
+                        {
+                            Array.from(props.entities.get(prop.replace('_', ' ').slice(0, -3)).values()).map(entity => {
+                                return <option key={entity.id} value={entity.id}>{entity.name}</option>
+                            })
+                        }
+                    </Input>
+                </Fragment>
+            )
+        } else {
+            return (
+                <Fragment>
+                    <Label for={prop}>{prop}</Label>
+                    <Input type='text' name={prop} value={!entity[prop] ? '' : entity[prop]}
+                           onChange={handleInputChange}/>
+                </Fragment>
+            )
+        }
     };
 
     return (
@@ -25,9 +49,7 @@ export const CreateForm = props => {
                 props.model.properties.map(prop => {
                     return (
                         <FormGroup className='text-left' key={prop}>
-                            <Label for={prop}>{prop}</Label>
-                            <Input type='text' name={prop} value={!entity[prop] ? '' : entity[prop]}
-                                   onChange={handleInputChange}/>
+                            {renderInput(prop)}
                         </FormGroup>
                     )
                 })

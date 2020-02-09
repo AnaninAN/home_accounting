@@ -20,8 +20,27 @@ class CrudContainer extends React.Component {
         }
     };
 
+    renderCrud = model => {
+        const { createEntity, removeEntity, updateEntity } = this.props;
+        let { entities } = this.props;
+        if (typeof(model['dependencies']) !== 'undefined') {
+            entities = entities.filter((value, key) =>
+                    key === model.title || model['dependencies'].includes(key)
+                )
+        } else {
+            entities = entities.get(model.title);
+        }
+        return <Crud
+            model={model}
+            entities={entities}
+            createEntity={createEntity}
+            removeEntity={removeEntity}
+            updateEntity={updateEntity}
+        />
+    };
+
     render() {
-        const { createEntity, removeEntity, updateEntity, entities, models } = this.props;
+       const { models } = this.props;
         return (
             <Container className='border bg-light w-50 position-absolute' style={{ top: 150, right: 50 }}>
                 <Nav tabs className='d-flex justify-content-around'>
@@ -39,13 +58,7 @@ class CrudContainer extends React.Component {
                 {(Object.values(models).map(model => (
                         <TabContent activeTab={this.state.activeTab} key={model.title}>
                             <TabPane tabId={model.title}>
-                                <Crud
-                                    model={model}
-                                    entities={entities.get(model.title)}
-                                    createEntity={createEntity}
-                                    removeEntity={removeEntity}
-                                    updateEntity={updateEntity}
-                                />
+                                {this.renderCrud(model)}
                             </TabPane>
                         </TabContent>
                     ))

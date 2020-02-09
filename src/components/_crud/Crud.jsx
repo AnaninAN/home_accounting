@@ -44,8 +44,8 @@ export class Crud extends React.Component {
     };
 
     render() {
-        const { model, entities } = this.props;
-        const { editing, currentEntity } = this.state;
+        const {model, entities} = this.props;
+        const {editing, currentEntity} = this.state;
         return (
             <Fragment>
                 <Row className='pt-2'>
@@ -63,12 +63,13 @@ export class Crud extends React.Component {
                                 currentEntity={currentEntity}
                                 updateEntity={this.handleUpdateEntity}
                                 model={model}
+                                entities={entities}
                             />
                         </Col>
                     ) : (
                         <Col className='text-center text-capitalize col-4 offset-4'>
                             <h4>Add {model.title}</h4>
-                            <CreateForm model={model} addEntity={this.handleCreateEntity}/>
+                            <CreateForm model={model} entities={entities} addEntity={this.handleCreateEntity}/>
                         </Col>
                     )}
                 </Row>
@@ -79,7 +80,7 @@ export class Crud extends React.Component {
                     <Col className='text-center text-capitalize col-10 offset-1'>
                         <ViewTable
                             model={model}
-                            entities={Array.from(entities.values())}
+                            entities={entities}
                             deleteEntity={this.handleRemoveEntity}
                             editRow={this.editRow}
                         />
