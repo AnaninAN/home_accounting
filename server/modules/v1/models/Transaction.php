@@ -47,6 +47,58 @@ class Transaction extends \yii\db\ActiveRecord
         ];
     }
 
+    public function beforeValidate() {
+        $this->date = Yii::$app->formatter->asTimestamp($this->date);
+        return parent::beforeValidate();
+    }
+
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        if ($insert) {
+            $this->account->amount += $this->amount;
+        } else {
+            $prev = $this::findOne($this->id);
+            if ($prev->account_id !== $this->account_id && $prev->amount !== $this->amount) {
+               $prev->account->amount -= $prev->amount;
+               $this->account->amount += $this->amount;
+               $prev->save();
+            } elseif ($prev->account_id === $this->account_id && $prev->amount !== $this->amount) {
+                $diff = $this->amount - $prev->amount;
+                $this->account->amount += $diff;
+            } elseif ($prev->account_id !== $this->account_id && $prev->amount === $this->amount) {
+                $prev->account->amount -= $this->amount;
+                $this->account->amount += $this->amount;
+                $prev->save();
+            }
+        }
+        if (!$this->account->save()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function afterFind() {
+        $this->date = Yii::$app->formatter->asDate($this->date);
+        parent::afterFind();
+    }
+
+    public function beforeDelete()
+    {
+        if (parent::beforeDelete()) {
+            $this->account->amount -= $this->amount;
+            if ($this->account->save()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -76,6 +128,11 @@ class Transaction extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+
+    public function fields()
+        {
+            return ['id', 'account_id', 'date', 'amount', 'comment'];
+        }
 
     /**
      * @return \yii\db\ActiveQuery

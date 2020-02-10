@@ -5,7 +5,7 @@ import { Container, Navbar, Button } from 'reactstrap';
 import { CrudRedux } from 'containers/CrudContainer';
 import { default as WidgetContainer} from 'containers/WidgetContainer';
 import { init } from 'actions/dashboard';
-import { category, currency, label, accountCategory, account } from 'models';
+import { category, currency, label, accountCategory, account, transaction } from 'models';
 
 class Dashboard extends React.Component {
 
@@ -19,6 +19,7 @@ class Dashboard extends React.Component {
         label,
         accountCategory,
         account,
+        transaction,
     ];
 
     componentDidMount() {

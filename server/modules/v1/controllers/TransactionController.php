@@ -16,16 +16,27 @@ class TransactionController extends ActiveController
     public $modelClass = Transaction::class;
 
     public function behaviors()
-    {
-        $behaviors = parent::behaviors();
+        {
+            $behaviors = parent::behaviors();
 
-        $behaviors['authenticator'] = [
-            'class' => HttpBearerAuth::class,
-            'except' => [],
-        ];
+            $behaviors['corsFilter'] = [
+                'class' => \yii\filters\Cors::className(),
+                'cors' => [
+                    'Origin' => ['http://localhost:8080'],
+                    'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                    'Access-Control-Allow-Credentials' => true,
+                ],
+            ];
 
-        return $behaviors;
-    }
+            unset($behaviors['authenticator']);
+
+            $behaviors['authenticator'] = [
+                'class' => HttpBearerAuth::class,
+                'except' => [],
+            ];
+
+            return $behaviors;
+        }
 
     public function checkAccess($action, $model = null, $params = [])
     {

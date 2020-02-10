@@ -20,8 +20,6 @@ export const UpdateForm = props => {
 
     const handleSubmit = event => {
         event.preventDefault();
-        if (!entity.name) return;
-
         props.updateEntity(entity);
     };
 
@@ -38,6 +36,14 @@ export const UpdateForm = props => {
                             })
                         }
                     </Input>
+                </Fragment>
+            )
+        } else if (prop.includes('date')) {
+            return (
+                <Fragment>
+                    <Label for={prop}>{prop}</Label>
+                    <Input type='date' name={prop} value={!entity[prop] ? '' : entity[prop]}
+                        onChange={handleInputChange}/>
                 </Fragment>
             )
         } else {

@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import {fromJS, Map} from 'immutable';
+import {Map} from 'immutable';
 
 import { create, remove, update } from 'actions/crud';
 import { load } from 'actions/dashboard';
@@ -11,6 +11,7 @@ const initialState = {
         ['label', new Map],
         ['account category', new Map],
         ['account', new Map],
+        ['transaction', new Map],
     ]),
 };
 

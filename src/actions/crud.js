@@ -1,5 +1,8 @@
 import { createAction } from 'redux-actions';
 
+import { init } from './dashboard';
+import { account } from 'models';
+
 export const create = createAction('[CRUD] Create');
 export const remove = createAction('[CRUD] Remove');
 export const update = createAction('[CRUD] Update');
@@ -20,6 +23,7 @@ export const createEntity = (entity, model) => dispatch => {
         }
     }).then(data => {
         dispatch(create({name: model.title, data}));
+        if (model.title === 'transaction') dispatch(init(account));
     });
 };
 
@@ -33,6 +37,7 @@ export const removeEntity = (id, model) => dispatch => {
     }).then(response => {
         if (response.status === 204) {
             dispatch(remove({name: model.title, id}));
+            if (model.title === 'transaction') dispatch(init(account));
         } else {
             return Promise.reject(new Error(response.statusText));
         }
@@ -58,5 +63,6 @@ export const updateEntity = (updatedEntity, model) => dispatch => {
         }
     }).then(data => {
         dispatch(update({name: model.title, data}));
+        if (model.title === 'transaction') dispatch(init(account));
     });
 };

@@ -13,7 +13,6 @@ export const CreateForm = props => {
 
     const handleSubmit = event => {
         event.preventDefault();
-        if (!entity.name) return;
         props.addEntity(entity);
         setEntity({});
     };
@@ -24,12 +23,21 @@ export const CreateForm = props => {
                 <Fragment>
                     <Label for={prop}>{prop.replace('_id', '')}</Label>
                     <Input type="select" name={prop} id={prop} onChange={handleInputChange}>
+                    <option value=''>Select .....</option>
                         {
                             Array.from(props.entities.get(prop.replace('_', ' ').slice(0, -3)).values()).map(entity => {
                                 return <option key={entity.id} value={entity.id}>{entity.name}</option>
                             })
                         }
                     </Input>
+                </Fragment>
+            )
+        } else if (prop.includes('date')) {
+            return (
+                <Fragment>
+                    <Label for={prop}>{prop}</Label>
+                    <Input type='date' name={prop} value={!entity[prop] ? '' : entity[prop]}
+                        onChange={handleInputChange}/>
                 </Fragment>
             )
         } else {
