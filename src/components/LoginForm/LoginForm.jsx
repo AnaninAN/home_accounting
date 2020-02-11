@@ -4,42 +4,26 @@ import './LoginForm.scss';
 
 export class LoginForm extends React.Component {
 
-        state = {
-            username: '',
-            password: '',
-        };
-
-    handleSignIn = () => {
-        const { username, password} = this.state;
-        const { onSuccess } = this.props;
-        fetch('http://localhost/v1/users/auth', {
-            method: 'POST',
-            body : JSON.stringify({username, password}),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }).then(response => {
-            if (response.status === 200) {
-                return response.json();
-            } else {
-                return Promise.reject(new Error(response.statusText));
-            }
-        }).then(data => {
-            onSuccess(data);
-            this.props.history.push('/');
-        });
-
+    state = {
+        username: '',
+        password: '',
     };
+
     handleTextEdit = ({target: {name, value}}) => {
         this.setState({
             [name]: value,
         })
     };
 
+    handleSignIn = () => {
+        event.preventDefault();
+        this.props.handleSignIn(this.state);
+    };
+
     render() {
         const {username, password} = this.state;
         return (
-            <Container className='w-25'>
+            <Container>
                 <Form className='mt-5 border p-5 d-flex flex-column justify-content-center'>
                     <h3 className='border-bottom text-center pb-2 mb-3'>Please Sign In</h3>
                     <FormGroup>
