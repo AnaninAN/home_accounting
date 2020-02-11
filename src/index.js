@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PrivateRoute } from 'components/PrivateRoute';
-import { Button } from 'reactstrap';
 
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
@@ -14,15 +13,11 @@ import Backend from 'react-dnd-html5-backend';
 import { store } from './store';
 import { Header } from 'containers/Header';
 import { DashboardRedux } from 'containers/Dashboard';
-import { LoginForm } from 'components/LoginForm';
+import { UserRedux } from './containers/UserContainer';
 
 class App extends React.Component {
     state = {token: localStorage.getItem('token')};
-    handleSuccess = (token) => {
-        this.setState({token}, () => {
-            localStorage.setItem('token', token);
-        });
-    };
+    
     handleSignOut = () => {
         this.setState({token: null}, () => {
             localStorage.clear();
@@ -36,7 +31,7 @@ class App extends React.Component {
                 <DndProvider backend={Backend}>
                     <Switch>
                         <PrivateRoute path='/' component={DashboardRedux} exact/>
-                        <Route path='/auth' render={(props) => <LoginForm {...props} onSuccess={this.handleSuccess}/>}/>
+                        <Route path='/auth' component={UserRedux}/>
                     </Switch>
                 </DndProvider>
             </div>
