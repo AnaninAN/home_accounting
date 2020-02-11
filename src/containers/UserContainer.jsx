@@ -18,12 +18,12 @@ class UserContainer extends React.Component {
     };
 
     render() {
-        const { handleSignIn } = this.props;
+        const { handleSignIn, errors } = this.props;
         return (
             <Container className='d-flex justify-content-around flex-column w-25'>
                 {this.state.isSignIn ? (
                     <Fragment>
-                        <LoginForm handleSignIn={handleSignIn}/>
+                        <LoginForm handleSignIn={handleSignIn} errors={errors}/>
                         <Button onClick={this.toggleForm}>To Registration</Button>
                     </Fragment>
                 ) : (
@@ -41,6 +41,7 @@ class UserContainer extends React.Component {
 function mapStateToProps(state, props) {
     return {
         ...props,
+        errors: state.user.errors,
     }
 }
 

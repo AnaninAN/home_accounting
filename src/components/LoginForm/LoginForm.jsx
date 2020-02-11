@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { Container, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import './LoginForm.scss';
 
 export class LoginForm extends React.Component {
@@ -22,6 +22,7 @@ export class LoginForm extends React.Component {
 
     render() {
         const {username, password} = this.state;
+        const { errors } = this.props;
         return (
             <Container>
                 <Form className='mt-5 border p-5 d-flex flex-column justify-content-center'>
@@ -34,6 +35,12 @@ export class LoginForm extends React.Component {
                         <Label for='password'>Password</Label>
                         <Input type='password' name='password' onChange={this.handleTextEdit} value={password}/>
                     </FormGroup>
+                    {
+                        errors.size > 0 && 
+                        <Alert color="danger">
+                            {errors.get('login')}
+                        </Alert>
+                    }
                     <Button color='success' onClick={this.handleSignIn}>Sign In</Button>
                 </Form>
             </Container>

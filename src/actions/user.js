@@ -1,3 +1,7 @@
+import { createAction } from 'redux-actions';
+
+export const errors = createAction('[User] Errors');
+
 export const signIn = user => dispatch => {
     fetch('http://localhost/v1/users/auth', {
             method: 'POST',
@@ -5,15 +9,15 @@ export const signIn = user => dispatch => {
             headers: {
                 'Content-Type': 'application/json',
             },
-        }).then(response => {
-            if (response.status === 200) {
-                return response.json();
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                dispatch(errors({name: 'login', data: data.message}));
             } else {
-                return Promise.reject(new Error(response.statusText));
+                localStorage.setItem('token', data);
+                window.location.href= '/';
             }
-        }).then(data => {
-            localStorage.setItem('token', data);
-            window.location.href= '/';
         });
 };
 
