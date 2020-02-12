@@ -8,7 +8,6 @@ import { init } from 'actions/dashboard';
 import { category, currency, label, accountCategory, account, transaction } from 'models';
 
 class Dashboard extends PureComponent {
-
   state = {
     crudVisible: false,
   };
@@ -24,7 +23,8 @@ class Dashboard extends PureComponent {
 
   componentDidMount() {
     const { loadEntities } = this.props;
-    this.models.forEach(model => loadEntities(model));
+
+    this.models.map((model) => loadEntities(model));
   }
 
   toggleCrudVisibility = () => {
@@ -41,12 +41,10 @@ class Dashboard extends PureComponent {
           <Button color='info' onClick={this.toggleCrudVisibility}>Toggle CRUD</Button>
         </Navbar>
         <h3 className='text-center p-2'>Dashboard</h3>
-        <WidgetContainer entities={this.props.entities.get('account')}/>
-        {
-          (this.state.crudVisible &&
-            <CrudRedux models={this.models}/>
-          )
-        }
+        <WidgetContainer entities={this.props.entities.get('account')} />
+
+        { this.state.crudVisible && <CrudRedux models={this.models} /> }
+
       </Container>
     )
   }

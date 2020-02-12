@@ -22,5 +22,5 @@ ReactDOM.render(
       </DndProvider>
     </ConnectedRouter>
   </Provider>,
-document.getElementById('root')
+  document.getElementById('root')
 );
