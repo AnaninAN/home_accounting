@@ -20,6 +20,7 @@
   "homepage": "https://github.com/AnaninAN/home_accounting#readme",
   "dependencies": {
     "bootstrap": "^4.4.1",
+    "connected-react-router": "^6.7.0",
     "core-js": "^3.4.1",
     "immutable": "^4.0.0-rc.12",
     "react": "^16.12.0",

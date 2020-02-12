@@ -51,6 +51,7 @@ module.exports = (env = {}) => {
         containers: path.resolve(__dirname, 'src', 'containers'),
         models: path.resolve(__dirname, 'src', 'components', '_models'),
         reducers: path.resolve(__dirname, 'src', 'reducers'),
+        middlewares: path.resolve(__dirname, 'src', 'middlewares'),
       },
     },
     module: {

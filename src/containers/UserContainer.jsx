@@ -1,11 +1,11 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Container, Button } from 'reactstrap';
 
 import { signIn, signUp } from 'actions/user';
 import { LoginForm } from 'components/LoginForm';
 
-class UserContainer extends React.Component {
+class UserContainer extends PureComponent {
 
     state ={
         isSignIn: true,
@@ -28,11 +28,11 @@ class UserContainer extends React.Component {
                     </Fragment>
                 ) : (
                     <Fragment>
-                        
+
                         <Button onClick={this.toggleForm}>To Login</Button>
                     </Fragment>
                     )
-                }          
+                }
             </Container>
         )
     }
