@@ -5,7 +5,7 @@ import { Row, Col } from 'reactstrap';
 
 import { CreateForm } from 'crud/CreateForm';
 import { ViewTable } from 'crud/ViewTable';
-import { UpdateForm } from '../UpdateForm';
+import { UpdateForm } from 'crud/UpdateForm';
 
 export class Crud extends PureComponent {
   state = {
@@ -13,7 +13,7 @@ export class Crud extends PureComponent {
     currentEntity: '',
   };
 
-  setEditing = value => {
+  setEditing = value => () => {
     this.setState({
       editing: value,
     })
@@ -27,23 +27,29 @@ export class Crud extends PureComponent {
   };
 
   handleCreateEntity = event => {
-    return this.props.createEntity(event, this.props.model);
+    const { model, createEntity } = this.props;
+
+    return createEntity(event, model);
   };
 
   handleRemoveEntity = event => {
+    const { model, removeEntity } = this.props;
+
     this.setState({
       editing: false,
     });
 
-    return this.props.removeEntity(event, this.props.model);
+    return removeEntity(event, model);
   };
 
   handleUpdateEntity = event => {
+    const { model, updateEntity } = this.props;
+
     this.setState({
       editing: false,
     });
 
-    return this.props.updateEntity(event, this.props.model);
+    return updateEntity(event, model);
   };
 
   render() {

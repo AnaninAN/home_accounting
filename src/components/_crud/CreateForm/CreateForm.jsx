@@ -9,26 +9,27 @@ export class CreateForm extends PureComponent {
   };
 
   handleInputChange = event => {
-      const { name, value } = event.currentTarget;
+    const { name, value } = event.currentTarget;
 
-      this.setState((prevState) => ({
-        entity: prevState.entity.set([name], value),
-      }));
-      //setEntity({...entity, [name]: value});
+    this.setState((prevState) => ({
+      entity: {...prevState.entity, [name]: value},
+    }));
   }
 
   handleSubmit = event => {
     const { addEntity } = this.props;
+    const { entity } = this.state;
 
     event.preventDefault();
     addEntity(entity);
-    this.state({
+    this.setState({
       entity: {},
     });
   };
 
   render() {
     const { model, entities } = this.props;
+    const { entity } = this.state;
 
     const renderInput = prop => {
       if (prop.includes('_id')) {
@@ -49,7 +50,7 @@ export class CreateForm extends PureComponent {
           return (
             <Fragment>
               <Label for={prop}>{prop}</Label>
-              <Input type='date' name={prop} value={!entity[prop] ? '' : entity[prop]}
+              <Input type='date' name={prop} value={entity.prop}
                 onChange={this.handleInputChange}/>
             </Fragment>
           )
@@ -57,7 +58,7 @@ export class CreateForm extends PureComponent {
         return (
           <Fragment>
             <Label for={prop}>{prop}</Label>
-            <Input type='text' name={prop} value={!entity[prop] ? '' : entity[prop]}
+            <Input type='text' name={prop} value={entity.prop}
               onChange={this.handleInputChange}/>
           </Fragment>
         )
