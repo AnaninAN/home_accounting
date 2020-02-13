@@ -1,0 +1,11 @@
+.info-name {
+  color: white;
+  font-size: 24px;
+  margin-right: 15px;
+
+  &__username {
+    color: #ffc107;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+}
