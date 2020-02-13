@@ -15,7 +15,8 @@ export const signIn = user => dispatch => {
       if (data.message) {
         dispatch(errors({name: 'login', data: data.message}));
       } else {
-        localStorage.setItem('token', data);
+        localStorage.setItem('token', data['token']);
+        localStorage.setItem('username', data['username']);
         window.location.href= '/';
       }
     });
@@ -35,7 +36,8 @@ export const signUp = user => dispatch => {
       if (data.message) {
         dispatch(errors({name: 'login', data: data.message}));
       } else {
-        localStorage.setItem('token', data);
+        localStorage.setItem('token', data['token']);
+        localStorage.setItem('username', data['username']);
         window.location.href= '/';
       }
     });
