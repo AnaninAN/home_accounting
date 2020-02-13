@@ -5,24 +5,27 @@ import { Container, Form, FormGroup, Label, Input, Button, Alert } from 'reactst
 
 export class LoginForm extends PureComponent {
   state = {
-      username: '',
-      password: '',
+    username: '',
+    password: '',
   };
 
-  handleTextEdit = ({target: {name, value}}) => {
+  handleTextEdit = ({ target: {name, value} }) => {
     this.setState({
       [name]: value,
     });
   };
 
   handleSignIn = (event) => {
+    const {handleSignIn  } = this.props;
+
     event.preventDefault();
-    this.props.handleSignIn(this.state);
+    handleSignIn(this.state);
   };
 
   render() {
     const { username, password } = this.state;
     const { errors } = this.props;
+
     return (
       <Container>
         <Form className='mt-5 border p-5 d-flex flex-column justify-content-center'>

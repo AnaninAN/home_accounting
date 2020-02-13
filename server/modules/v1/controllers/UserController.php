@@ -16,7 +16,7 @@ class UserController extends ActiveController
     {
         $behaviors = parent::behaviors();
         $behaviors['corsFilter'] = [
-                    'class' => \yii\filters\Cors::className(),
+                    'class' => Cors::class,
                     'cors' => [
                         'Origin' => ['http://localhost:8080'],
                         'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'HEAD', 'OPTIONS'],
