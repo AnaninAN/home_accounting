@@ -39,6 +39,7 @@ module.exports = (env = {}) => {
     mode: isProd ? 'production' : isDev && 'development',
 
     entry: path.resolve(__dirname, 'src', 'index.js'),
+    devtool: isDev ? 'eval-source-map' : 'none',
     output: {
       filename: isProd ? 'main-[hash:8].js' : undefined
     },
@@ -50,7 +51,9 @@ module.exports = (env = {}) => {
         components: path.resolve(__dirname, 'src', 'components'),
         containers: path.resolve(__dirname, 'src', 'containers'),
         models: path.resolve(__dirname, 'src', 'components', '_models'),
+        crud: path.resolve(__dirname, 'src', 'components', '_crud'),
         reducers: path.resolve(__dirname, 'src', 'reducers'),
+        middlewares: path.resolve(__dirname, 'src', 'middlewares'),
       },
     },
     module: {

@@ -1,7 +1,15 @@
-import {applyMiddleware, createStore} from 'redux';
+import { applyMiddleware, createStore } from 'redux';
+import { routerMiddleware } from 'connected-react-router';
+import { createBrowserHistory } from 'history';
+import thunk from 'redux-thunk';
 
-import { rootReducer } from 'reducers';
-import  thunk  from 'redux-thunk';
 import { logger } from 'redux-logger';
 
-export const store = createStore(rootReducer, applyMiddleware(thunk, logger));
+import { initReducer } from 'reducers';
+
+export const history = createBrowserHistory();
+
+export const store = createStore(
+  initReducer(history),
+  applyMiddleware(logger, routerMiddleware(history), thunk)
+);
