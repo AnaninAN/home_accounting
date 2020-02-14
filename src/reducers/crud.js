@@ -1,7 +1,7 @@
 import { handleActions } from 'redux-actions';
 import {Map} from 'immutable';
 
-import { create, remove, update } from 'actions/crud';
+import { create, remove, update, errors, clearErrors } from 'actions/crud';
 import { load } from 'actions/dashboard';
 
 const initialState = {
@@ -27,6 +27,12 @@ export const crudReducer = handleActions({
     }),
     [update]: (state, action) => ({
         entities: state.entities.setIn([action.payload.name, action.payload.data.id.toString()], action.payload.data),
+    }),
+    [errors]: (state, action) => ({
+        entities: state.entities.setIn([action.payload.name, 'errors'], action.payload.data),
+    }),
+    [clearErrors]: (state, action) => ({
+        entities: state.entities.deleteIn([action.payload.name, 'errors']),
     }),
 }, initialState);
 

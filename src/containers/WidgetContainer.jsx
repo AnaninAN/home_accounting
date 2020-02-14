@@ -7,12 +7,12 @@ class WidgetContainer extends React.Component {
     constructor() {
         super(...arguments);
         this.state = {
-            crudVisible: false,
             widgets: {},
         };
     }
 
     render() {
+      
         const {connectDropTarget, dependencies} = this.props;
         let { entities } = this.props;
         const widgets = this.state.widgets;

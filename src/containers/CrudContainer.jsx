@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Container, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
 
 import { Crud } from 'components/_crud/Crud';
-import { createEntity, removeEntity, updateEntity } from 'actions/crud';
+import { createEntity, removeEntity, updateEntity, clearErrors } from 'actions/crud';
 
 class CrudContainer extends PureComponent {
   state = {
@@ -19,22 +19,38 @@ class CrudContainer extends PureComponent {
   }
 
   renderCrud = model => {
-    const { createEntity, removeEntity, updateEntity } = this.props;
+    const { createEntity, removeEntity, updateEntity, clearErrors } = this.props;
     let { entities } = this.props;
-
+    let errors = '';
     if (typeof(model['dependencies']) !== 'undefined') {
-      entities = entities.filter((value, key) =>
-        key === model.title || model['dependencies'].includes(key))
+      entities = entities.filter((value, key) => 
+        key === model.title || model['dependencies'].includes(key)
+      );
+    entities.keySeq().forEach(key => {
+      if (entities.hasIn([key, 'errors'])) {
+        if (key === model.title) {
+          errors = entities.getIn([model.title, 'errors']);
+          setTimeout(clearErrors, 5000, model);
+        }
+        entities = entities.deleteIn([key, 'errors']);
+      }
+    }); 
     } else {
       entities = entities.get(model.title);
+      if (entities.has('errors')) {
+        errors = entities.get('errors');
+        entities = entities.delete('errors');
+        setTimeout(clearErrors, 5000, model);
+      }
     }
-
+    
     return <Crud
       model={model}
       entities={entities}
       createEntity={createEntity}
       removeEntity={removeEntity}
       updateEntity={updateEntity}
+      errors={errors}
     />
   };
 
@@ -75,6 +91,7 @@ function mapDispatchToProps(dispatch) {
     createEntity: (entity, model) => dispatch(createEntity(entity, model)),
     removeEntity: (id, model) => dispatch(removeEntity(id, model)),
     updateEntity: (entity, model) => dispatch(updateEntity(entity, model)),
+    clearErrors: (model) => dispatch(clearErrors({name: model.title})),
   }
 }
 

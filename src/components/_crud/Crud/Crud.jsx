@@ -1,7 +1,7 @@
 import './Crud.scss';
 
 import React, { PureComponent, Fragment } from 'react';
-import { Row, Col } from 'reactstrap';
+import { Row, Col, Alert } from 'reactstrap';
 
 import { CreateForm } from 'crud/CreateForm';
 import { ViewTable } from 'crud/ViewTable';
@@ -53,7 +53,7 @@ export class Crud extends PureComponent {
   };
 
   render() {
-    const { model, entities } = this.props;
+    const { model, entities, errors } = this.props;
     const { editing, currentEntity } = this.state;
 
     return (
@@ -87,6 +87,22 @@ export class Crud extends PureComponent {
             </Col>
           )}
         </Row>
+        {
+          errors.length > 0 && 
+          <Row className='mt-3'>
+            <Col className='col-6 offset-3'>
+              <Alert color="danger">
+                {Array.isArray(errors) ? (
+                  <ul>
+                  {errors.map((error, idx) => {
+                    return <li key={idx}>{error.field} - {error.message}</li>
+                  })}
+                  </ul>
+                ) : (errors)}
+              </Alert>
+            </Col>
+          </Row>
+        }
         <Row className='mt-3'>
           <Col className='text-center text-capitalize col-4 offset-4'>
             <h3>View {model.url}</h3>
