@@ -55,7 +55,7 @@ export class UpdateForm extends PureComponent {
         return (
           <Fragment>
             <Label for={prop}>{prop}</Label>
-            <Input type='text' name={prop} value={entity[prop]}
+            <Input type='text' name={prop} value={entity[prop] ? entity[prop] : ''}
               onChange={this.handleInputChange}/>
           </Fragment>
         );

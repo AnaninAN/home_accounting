@@ -7,7 +7,7 @@ export const create = createAction('[CRUD] Create');
 export const remove = createAction('[CRUD] Remove');
 export const update = createAction('[CRUD] Update');
 export const errors = createAction('[CRUD] Errors');
-export const clearErrors = createAction('[CRUD] Clear Errors')
+export const clearErrors = createAction('[CRUD] Clear Errors');
 
 export const createEntity = (entity, model) => dispatch => {
     fetch(`http://localhost/v1/${model.url}`, {
@@ -31,9 +31,9 @@ export const createEntity = (entity, model) => dispatch => {
                 });
         } else {
             return response.json()
-            .then(data => {
-                if (data.message) {
-                    dispatch(errors({name: model.title, data: data.message}));
+                .then(data => {
+                    if (data.message) {
+                        dispatch(errors({name: model.title, data: data.message}));
                 }
             });
         }
@@ -52,7 +52,12 @@ export const removeEntity = (id, model) => dispatch => {
             dispatch(remove({name: model.title, id}));
             if (model.title === 'transaction') dispatch(init(account));
         } else {
-            return Promise.reject(new Error(response.statusText));
+            return response.json()
+            .then(data => {
+                if (data.message) {
+                    dispatch(errors({name: model.title, data: data.message}));
+                }
+            });
         }
     });
 };
@@ -70,12 +75,23 @@ export const updateEntity = (updatedEntity, model) => dispatch => {
         },
     }).then(response => {
         if (response.status === 200) {
-            return response.json();
+            return response.json()
+                .then(data => {
+                    dispatch(update({name: model.title, data}));
+                    if (model.title === 'transaction') dispatch(init(account));
+                })
+        } else if (response.status === 422) {
+            return response.json()
+                .then(data => {
+                    dispatch(errors({name: model.title, data}));
+                });
         } else {
-            return Promise.reject(new Error(response.statusText));
+            return response.json()
+            .then(data => {
+                if (data.message) {
+                    dispatch(errors({name: model.title, data: data.message}));
+                }
+            });
         }
-    }).then(data => {
-        dispatch(update({name: model.title, data}));
-        if (model.title === 'transaction') dispatch(init(account));
-    });
-};
+    })
+}
