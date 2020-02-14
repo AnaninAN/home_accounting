@@ -86,6 +86,11 @@ class Transaction extends \yii\db\ActiveRecord
         parent::afterFind();
     }
 
+    public function afterSave($insert, $changedAttributes) {
+        parent::afterSave($insert, $changedAttributes);
+        $this->date = Yii::$app->formatter->asDate($this->date);
+    }
+
     public function beforeDelete()
     {
         if (parent::beforeDelete()) {

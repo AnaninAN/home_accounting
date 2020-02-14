@@ -50,7 +50,7 @@ class DashboardContainer extends PureComponent {
     return (
       <>
         <Header token={token} handleSignOut={this.handleSignOut} username={username} />
-        <Container fluid className='bg-secondary min-vh-100 position-relative'>
+        <Container fluid className='bg-secondary min-vh-100 position-relative overflow-auto'>
           <Navbar className='d-flex border-bottom'>
             <h4 className='text-light'>Management Panel</h4>
             <Button color='info' onClick={this.toggleCrudVisibility}>Toggle CRUD</Button>
