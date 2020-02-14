@@ -46,7 +46,8 @@ class DashboardContainer extends PureComponent {
   render() {
     const { token, crudVisible, username } = this.state;
     const { entities } = this.props;
-
+    const dependencies = entities.filter((value, key) => account['dependencies'].includes(key));
+    
     return (
       <>
         <Header token={token} handleSignOut={this.handleSignOut} username={username} />
@@ -56,7 +57,7 @@ class DashboardContainer extends PureComponent {
             <Button color='info' onClick={this.toggleCrudVisibility}>Toggle CRUD</Button>
           </Navbar>
           <h3 className='text-center p-2'>Dashboard</h3>
-          <WidgetContainer entities={entities.get('account')} />
+          <WidgetContainer entities={entities.get('account')} dependencies={dependencies} />
 
           { crudVisible && <CrudRedux models={this.models} /> }
 
