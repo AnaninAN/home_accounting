@@ -79,7 +79,7 @@ class TransactionController extends ActiveController
         foreach ($accounts as $account) {
             $transactions[] = Transaction::findAll(['account_id' => $account['id']]);
         }
-        return $transactions;
+        return $transactions[0];
     }
 
     private function validateAccountId($account_id)

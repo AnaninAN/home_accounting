@@ -7,15 +7,18 @@ class WidgetContainer extends React.Component {
     constructor() {
         super(...arguments);
         this.state = {
-            crudVisible: false,
             widgets: {},
         };
     }
 
     render() {
         const {connectDropTarget} = this.props;
-        const entities = Array.from(this.props.entities.values());
+        let { entities } = this.props;
         const widgets = this.state.widgets;
+        if (entities.has('errors')) {
+            entities = entities.delete('errors');
+        }
+        entities = Array.from(entities.values());
 
         return connectDropTarget(
             <div>
