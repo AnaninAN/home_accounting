@@ -1,0 +1,1 @@
+export { WidgetAccountContent } from './WidgetAccountContent';

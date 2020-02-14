@@ -13,9 +13,13 @@ class WidgetContainer extends React.Component {
     }
 
     render() {
-        const {connectDropTarget} = this.props;
-        const entities = Array.from(this.props.entities.values());
+        const {connectDropTarget, dependencies} = this.props;
+        let { entities } = this.props;
         const widgets = this.state.widgets;
+        if (entities.has('errors')) {
+            entities = entities.delete('errors');
+        }
+        entities = Array.from(entities.values());
 
         return connectDropTarget(
             <div>
@@ -24,6 +28,7 @@ class WidgetContainer extends React.Component {
                     entities.map(entity => {
                         return <Widget
                             entity={entity}
+                            dependencies={dependencies}
                             key={entity.id}
                             id={entity.id}
                             top={typeof(widgets[entity.id]) !== 'undefined' ? widgets[entity.id].top : 0}
