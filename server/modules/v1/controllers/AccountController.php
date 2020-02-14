@@ -1,13 +1,12 @@
 <?php
 
-
 namespace app\modules\v1\controllers;
-
 
 use app\modules\v1\models\Account;
 use Yii;
 use yii\filters\auth\HttpBearerAuth;
 use yii\rest\ActiveController;
+use \yii\filters\Cors;
 
 class AccountController extends ActiveController
 {
@@ -18,7 +17,7 @@ class AccountController extends ActiveController
         $behaviors = parent::behaviors();
 
         $behaviors['corsFilter'] = [
-            'class' => \yii\filters\Cors::className(),
+            'class' => Cors::class,
             'cors' => [
                 'Origin' => ['http://localhost:8080'],
                 'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],

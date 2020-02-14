@@ -24,4 +24,4 @@ export const init = entity => dispatch => {
       }, {});
       dispatch(load({name: entity.title, data}));
     });
-  };
+};

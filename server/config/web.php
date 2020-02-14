@@ -78,6 +78,7 @@ $config = [
                         'POST sign-up' => 'sign-up',
                         'POST auth' => 'auth',
                         'OPTIONS auth' => 'auth',
+                        'OPTIONS sign-up' => 'sign-up',
                     ],
                 ],
                 [

@@ -1,27 +1,12 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
-import { Header } from 'containers/Header';
 import { PrivateRoute } from 'components/PrivateRoute';
-import { DashboardRedux } from 'containers/Dashboard';
+import { DashboardRedux } from 'containers/DashboardContainer';
 
-export class App extends PureComponent {
-  state = {
-    token: localStorage.getItem('token'),
-  };
-
-  handleSignOut = () => {
-    localStorage.clear();
-    this.setState({
-      token: '',
-    });
-  };
-
-  render() {
-    return (
-      <div>
-        <Header token={this.state.token} handleSignOut={this.handleSignOut}/>
-        <PrivateRoute path='/' component={DashboardRedux} exact/>
-      </div>
-    );
-  }
+export const App = () => {
+  return (
+  <div>
+    <PrivateRoute path='/' component={DashboardRedux} exact/>
+  </div>
+  );
 }

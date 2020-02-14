@@ -16,7 +16,7 @@ class UserController extends ActiveController
     {
         $behaviors = parent::behaviors();
         $behaviors['corsFilter'] = [
-                    'class' => \yii\filters\Cors::className(),
+                    'class' => Cors::class,
                     'cors' => [
                         'Origin' => ['http://localhost:8080'],
                         'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'HEAD', 'OPTIONS'],
@@ -68,7 +68,12 @@ class UserController extends ActiveController
             if ($user->save()) {
                 $role = Yii::$app->authManager->getRole('simple');
                 Yii::$app->authManager->assign($role, (string) $user->id);
-                return $user->getAuthKey();
+                $dataUser = [];
+
+                $dataUser["token"] = $user->getAuthKey();
+                $dataUser["username"] = $user->username;
+
+                return $dataUser;
             } else {
                 echo json_encode($user->errors);
             }
@@ -81,7 +86,12 @@ class UserController extends ActiveController
             throw new \yii\web\ForbiddenHttpException('Wrong credentials');
         } else {
             if ($user->validatePassword(Yii::$app->request->post('password'))) {
-                return $user->getAuthKey();
+                $dataUser = [];
+
+                $dataUser["token"] = $user->getAuthKey();
+                $dataUser["username"] = $user->username;
+
+                return $dataUser;
             } else {
                 throw new \yii\web\ForbiddenHttpException('Wrong credentials');
             }
