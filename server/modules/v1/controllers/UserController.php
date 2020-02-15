@@ -75,7 +75,7 @@ class UserController extends ActiveController
 
                 return $dataUser;
             } else {
-                echo json_encode($user->errors);
+                throw new \yii\web\ForbiddenHttpException(json_encode($user->errors));
             }
     }
 

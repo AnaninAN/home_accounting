@@ -25,7 +25,10 @@ export class RegForm extends PureComponent {
 
   render() {
     const { username, password, email } = this.state;
-    const { errors } = this.props;
+    const { errors, toggleForm, clearErrors } = this.props;
+    if (errors.length > 0 ) {
+      setTimeout(clearErrors, 4000, 'signup');
+    }
 
     return (
       <Container>
@@ -44,12 +47,13 @@ export class RegForm extends PureComponent {
             <Input type='text' name='email' onChange={this.handleTextEdit} value={email}/>
           </FormGroup>
           {
-              errors.size > 0 &&
+              errors.length > 0 &&
               <Alert color="danger">
-                {errors.get('login')}
+                {errors}
               </Alert>
           }
           <Button color='success' onClick={this.handleSignUp}>Sign Up</Button>
+          <Button className='mt-3' onClick={toggleForm}>To Login</Button>
         </Form>
       </Container>
     );

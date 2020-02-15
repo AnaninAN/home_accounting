@@ -5,6 +5,7 @@ namespace app\modules\v1\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\web\ForbiddenHttpException;
 
 /**
  * This is the model class for table "{{%transaction}}".
@@ -61,19 +62,25 @@ class Transaction extends \yii\db\ActiveRecord
             $this->account->amount += $this->amount;
         } else {
             $prev = $this::findOne($this->id);
-            if ($prev->account_id !== $this->account_id && $prev->amount !== $this->amount) {
+            if ($prev->account_id !== (int)$this->account_id && (int)$prev->amount !== (int)$this->amount) {
+               if ($prev->account->currency_id !== (int)$this->account->currency_id) {
+                   throw new ForbiddenHttpException('Can not convert currencies');
+               } 
                $prev->account->amount -= $prev->amount;
                $this->account->amount += $this->amount;
                $prev->save();
-            } elseif ($prev->account_id === $this->account_id && $prev->amount !== $this->amount) {
+            } elseif ($prev->account_id === (int)$this->account_id && (int)$prev->amount !== (int)$this->amount) {
                 $diff = $this->amount - $prev->amount;
                 $this->account->amount += $diff;
-            } elseif ($prev->account_id !== $this->account_id && $prev->amount === $this->amount) {
+            } elseif ($prev->account_id !== (int)$this->account_id && (int)$prev->amount === (int)$this->amount) {
+                if ($prev->account->currency_id !== (int)$this->account->currency_id) {
+                    throw new ForbiddenHttpException('Can not convert currencies');
+                } 
                 $prev->account->amount -= $this->amount;
                 $this->account->amount += $this->amount;
                 $prev->save();
             }
-        }
+         }
         if (!$this->account->save()) {
             return false;
         } else {
