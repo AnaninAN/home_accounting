@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions';
 
 export const errors = createAction('[User] Errors');
+export const clearErrors = createAction('[User] Clear Errors');
 
 export const signIn = user => dispatch => {
   fetch('http://localhost/v1/users/auth', {
@@ -30,15 +31,21 @@ export const signUp = user => dispatch => {
       'Content-Type': 'application/json',
     },
   })
-    .then(response => response.json())
-    .then(data => {
-      console.log('data', data);
-      if (data.message) {
-        dispatch(errors({name: 'login', data: data.message}));
+    .then(response => {
+      if (response.status === 200) {
+          return response.json()
+              .then(data => {
+                localStorage.setItem('token', data['token']);
+                localStorage.setItem('username', data['username']);
+                window.location.href= '/';
+              })
       } else {
-        localStorage.setItem('token', data['token']);
-        localStorage.setItem('username', data['username']);
-        window.location.href= '/';
+          return response.json()
+          .then(data => {
+              if (data.message) {
+                  dispatch(errors({name: 'signup', data: data.message}));
+              }
+          });
       }
-    });
+    })
 };

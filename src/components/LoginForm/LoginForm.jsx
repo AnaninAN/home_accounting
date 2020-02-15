@@ -24,7 +24,10 @@ export class LoginForm extends PureComponent {
 
   render() {
     const { username, password } = this.state;
-    const { errors } = this.props;
+    const { errors, toggleForm, clearErrors } = this.props;
+    if (errors.length > 0 ) {
+      setTimeout(clearErrors, 4000, 'login');
+    }
 
     return (
       <Container>
@@ -39,12 +42,13 @@ export class LoginForm extends PureComponent {
             <Input type='password' name='password' onChange={this.handleTextEdit} value={password}/>
           </FormGroup>
           {
-              errors.size > 0 &&
+              errors.length > 0 &&
               <Alert color="danger">
-                {errors.get('login')}
+                {errors}
               </Alert>
           }
           <Button color='success' onClick={this.handleSignIn}>Sign In</Button>
+          <Button className='mt-3' onClick={toggleForm}>To Registration</Button>
         </Form>
       </Container>
     );

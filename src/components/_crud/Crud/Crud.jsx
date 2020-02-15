@@ -95,7 +95,7 @@ export class Crud extends PureComponent {
                 {Array.isArray(errors) ? (
                   <ul>
                   {errors.map((error, idx) => {
-                    return <li key={idx}>{error.field} - {error.message}</li>
+                    return <li key={idx}>{error.message}</li>
                   })}
                   </ul>
                 ) : (errors)}

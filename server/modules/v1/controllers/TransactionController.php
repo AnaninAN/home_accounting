@@ -77,9 +77,12 @@ class TransactionController extends ActiveController
         $transactions = [];
         $accounts = Account::findAll(['user_id' => Yii::$app->user->id]);
         foreach ($accounts as $account) {
-            $transactions[] = Transaction::findAll(['account_id' => $account['id']]);
+           $accountTransactions = Transaction::findAll(['account_id' => $account['id']]);
+           foreach ($accountTransactions as $entity) {
+               if ($entity['account_id'] === $account['id']) $transactions[] = $entity;
+           }
         }
-        return isset($transactions[0]) ? $transactions[0] : $transactions;
+        return $transactions;
     }
 
     private function validateAccountId($account_id)
